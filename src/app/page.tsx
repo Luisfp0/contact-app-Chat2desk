@@ -1,8 +1,9 @@
-"use client"
+"use client";
 import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import logo from "../../public/chat2desk_brasil_logo.jpeg";
+import Image from "next/image";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -12,7 +13,8 @@ export default function LoginPage() {
 
   useEffect(() => {
     const checkAuthentication = () => {
-      const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+      const isAuthenticated =
+        localStorage.getItem("isAuthenticated") === "true";
       if (isAuthenticated) {
         router.push("/dashboard");
       }
@@ -24,15 +26,15 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-  
+
     if (username === "admin" && password === "password") {
-      console.log('Logged');
+      console.log("Logged");
       localStorage.setItem("isAuthenticated", "true");
       router.push("/dashboard");
     } else {
       alert("Credenciais inválidas. Por favor, tente novamente.");
     }
-  
+
     setLoading(false);
   };
 
@@ -41,8 +43,16 @@ export default function LoginPage() {
       <div className="flex w-full h-full">
         <div className="flex flex-col items-center justify-center w-2/5 bg-blue-500 text-white">
           <div>
-            <img className="w-24 h-24 rounded-lg" src={logo.src} alt="logo" />
-            <h1 className="mt-4 text-4xl font-bold text-[#283CFA]">Chat<span className="text-[#55DBAB]">2</span>Desk</h1>
+            <Image
+              src="/images/chat2desk_brasil_logo.jpeg"
+              width={96}
+              height={96}
+              className="rounded-lg"
+              alt="logo"
+            />
+            <h1 className="mt-4 text-4xl font-bold text-[#283CFA]">
+              Chat<span className="text-[#55DBAB]">2</span>Desk
+            </h1>
             <h3 className="mt-2 text-xl">CRM OmniChannel</h3>
           </div>
         </div>
@@ -54,7 +64,9 @@ export default function LoginPage() {
             </h1>
             <form onSubmit={handleLogin}>
               <div className="flex flex-col mb-4">
-                <label htmlFor="username" className="mb-2">Nome de usuário ou e-mail:</label>
+                <label htmlFor="username" className="mb-2">
+                  Nome de usuário ou e-mail:
+                </label>
                 <input
                   id="username"
                   type="text"
@@ -64,7 +76,9 @@ export default function LoginPage() {
                 />
               </div>
               <div className="flex flex-col mb-6">
-                <label htmlFor="password" className="mb-2">Senha:</label>
+                <label htmlFor="password" className="mb-2">
+                  Senha:
+                </label>
                 <input
                   id="password"
                   type="password"
