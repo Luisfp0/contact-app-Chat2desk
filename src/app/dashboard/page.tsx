@@ -1,4 +1,5 @@
 "use client";
+import React from 'react';
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
@@ -42,8 +43,9 @@ export default function DashboardPage() {
   }, []);
 
   const handleContactClick = (id: number) => {
+    console.log(`Clicked on contact with id: ${id}`);
     router.push(`/dashboard/${id}`);
-  };
+  };  
 
   if (loading) {
     return <Loading />;
