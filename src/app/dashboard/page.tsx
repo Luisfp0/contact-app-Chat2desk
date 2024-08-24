@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
+import { useAuth } from "@/hooks/useAuth";
+import Loading from "@/components/Loading";
 interface Contact {
   id: number;
   name: string;
@@ -10,20 +11,31 @@ interface Contact {
 }
 
 export default function DashboardPage() {
+  useAuth();
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     const fetchContacts = async () => {
-      const response = await fetch("https://jsonplaceholder.typicode.com/users");
-      const data = await response.json();
-      const contacts = data.map((user: any) => ({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        avatarUrl: `https://i.pravatar.cc/150?img=${user.id}`,
-      }));
-      setContacts(contacts);
+      try {
+        setLoading(true);
+        const response = await fetch(
+          "https://jsonplaceholder.typicode.com/users"
+        );
+        const data = await response.json();
+        const contacts = data.map((user: any) => ({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          avatarUrl: `https://i.pravatar.cc/150?img=${user.id}`,
+        }));
+        setContacts(contacts);
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchContacts();
@@ -32,6 +44,10 @@ export default function DashboardPage() {
   const handleContactClick = (id: number) => {
     router.push(`/dashboard/${id}`);
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="p-8">
@@ -50,7 +66,9 @@ export default function DashboardPage() {
                 className="w-16 h-16 rounded-full mr-4"
               />
               <div>
-                <h2 className="text-xl font-semibold text-black">{contact.name}</h2>
+                <h2 className="text-xl font-semibold text-black">
+                  {contact.name}
+                </h2>
                 <p className="text-gray-500">{contact.email}</p>
               </div>
             </div>

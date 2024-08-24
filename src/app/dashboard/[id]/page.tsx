@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa";
+import { useAuth } from "@/hooks/useAuth";
+import Loading from "@/components/Loading";
 
 interface Contact {
   id: number;
@@ -17,13 +19,16 @@ interface Contact {
 }
 
 export default function ContactDetailsPage() {
+  useAuth();
   const [contact, setContact] = useState<Contact | null>(null);
   const router = useRouter();
   const { id } = useParams();
 
   useEffect(() => {
     const fetchContact = async () => {
-      const response = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/users/${id}`
+      );
       const data = await response.json();
       setContact(data);
     };
@@ -32,7 +37,7 @@ export default function ContactDetailsPage() {
   }, [id]);
 
   if (!contact) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
@@ -60,7 +65,11 @@ export default function ContactDetailsPage() {
           </p>
           <p className="text-lg mb-2">
             <strong>Website:</strong>{" "}
-            <a href={`http://${contact.website}`} target="_blank" rel="noopener noreferrer">
+            <a
+              href={`http://${contact.website}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {contact.website}
             </a>
           </p>
