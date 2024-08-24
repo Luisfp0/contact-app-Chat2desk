@@ -1,4 +1,5 @@
-"use client";
+"use client"
+import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import logo from "../../public/chat2desk_brasil_logo.jpeg";
@@ -9,7 +10,6 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // Checks if the user is already authenticated
   useEffect(() => {
     const checkAuthentication = () => {
       const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
@@ -24,10 +24,7 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
-    //Simulates network delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
+  
     if (username === "admin" && password === "password") {
       console.log('Logged');
       localStorage.setItem("isAuthenticated", "true");
@@ -35,7 +32,7 @@ export default function LoginPage() {
     } else {
       alert("Credenciais inválidas. Por favor, tente novamente.");
     }
-    
+  
     setLoading(false);
   };
 
@@ -57,8 +54,9 @@ export default function LoginPage() {
             </h1>
             <form onSubmit={handleLogin}>
               <div className="flex flex-col mb-4">
-                <label className="mb-2">Nome de usuário ou e-mail:</label>
+                <label htmlFor="username" className="mb-2">Nome de usuário ou e-mail:</label>
                 <input
+                  id="username"
                   type="text"
                   className="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={username}
@@ -66,8 +64,9 @@ export default function LoginPage() {
                 />
               </div>
               <div className="flex flex-col mb-6">
-                <label className="mb-2">Senha:</label>
+                <label htmlFor="password" className="mb-2">Senha:</label>
                 <input
+                  id="password"
                   type="password"
                   className="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={password}
