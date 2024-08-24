@@ -1,22 +1,42 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import logo from "../../public/chat2desk_brasil_logo.jpeg";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  // Checks if the user is already authenticated
+  useEffect(() => {
+    const checkAuthentication = () => {
+      const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+      if (isAuthenticated) {
+        router.push("/dashboard");
+      }
+    };
+
+    checkAuthentication();
+  }, [router]);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+
+    //Simulates network delay
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     if (username === "admin" && password === "password") {
-      console.log('Logged')
+      console.log('Logged');
       localStorage.setItem("isAuthenticated", "true");
       router.push("/dashboard");
     } else {
       alert("Credenciais inválidas. Por favor, tente novamente.");
     }
+    
+    setLoading(false);
   };
 
   return (
@@ -57,8 +77,9 @@ export default function LoginPage() {
               <button
                 className="w-full px-3 py-2 text-white bg-green-500 rounded-md hover:bg-green-600"
                 type="submit"
+                disabled={loading}
               >
-                Entrar
+                {loading ? "Entrando..." : "Entrar"}
               </button>
             </form>
             <span className="mt-4 text-blue-500 underline cursor-pointer">
