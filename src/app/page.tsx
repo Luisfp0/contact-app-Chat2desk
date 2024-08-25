@@ -2,7 +2,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import logo from "../../public/chat2desk_brasil_logo.jpeg";
 import Image from "next/image";
 
 export default function LoginPage() {
@@ -40,14 +39,14 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center h-screen bg-white">
-      <div className="flex w-full h-full">
-        <div className="flex flex-col items-center justify-center w-2/5 bg-blue-500 text-white">
-          <div>
+      <div className="flex flex-col md:flex-row w-full h-full">
+        <div className="flex flex-col items-center justify-center w-full md:w-4/5 bg-blue-500 text-white p-8">
+          <div className="text-center">
             <Image
               src="/images/chat2desk_brasil_logo.jpeg"
               width={96}
               height={96}
-              className="rounded-lg"
+              className="rounded-lg mx-auto"
               alt="logo"
             />
             <h1 className="mt-4 text-4xl font-bold text-[#283CFA]">
@@ -57,9 +56,9 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="flex items-center justify-center w-3/5">
-          <div className="flex flex-col w-80 text-black">
-            <h1 className="mb-8 text-lg font-semibold">
+        <div className="flex items-center justify-center w-full md:w-3/5 p-8">
+          <div className="flex flex-col w-full max-w-sm text-black">
+            <h1 className="mb-8 text-lg font-semibold text-center md:text-left">
               Entre com seus dados de acesso.
             </h1>
             <form onSubmit={handleLogin}>
@@ -95,7 +94,7 @@ export default function LoginPage() {
                 {loading ? "Entrando..." : "Entrar"}
               </button>
             </form>
-            <span className="mt-4 text-blue-500 underline cursor-pointer">
+            <span className="mt-4 text-blue-500 underline cursor-pointer text-center md:text-left">
               Esqueci minha senha
             </span>
           </div>

@@ -43,8 +43,16 @@ export default function DashboardPage() {
   }, []);
 
   const handleContactClick = (id: number) => {
-    console.log(`Clicked on contact with id: ${id}`);
     router.push(`/dashboard/${id}`);
+  };
+
+  const handleLogout = async () => {
+    try {
+      localStorage.removeItem("isAuthenticated");
+      router.push("/");
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
   };
 
   if (loading) {
@@ -53,7 +61,15 @@ export default function DashboardPage() {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Contatos</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Contatos</h1>
+        <button
+          onClick={handleLogout}
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+        >
+          Logout
+        </button>
+      </div>
       <div className="flex flex-wrap -mx-2">
         {contacts.map((contact) => (
           <div
