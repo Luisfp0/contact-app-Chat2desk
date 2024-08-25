@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
@@ -45,7 +45,7 @@ export default function DashboardPage() {
   const handleContactClick = (id: number) => {
     console.log(`Clicked on contact with id: ${id}`);
     router.push(`/dashboard/${id}`);
-  };  
+  };
 
   if (loading) {
     return <Loading />;
@@ -67,11 +67,11 @@ export default function DashboardPage() {
                 alt={`${contact.name}'s avatar`}
                 className="w-16 h-16 rounded-full mr-4"
               />
-              <div>
+              <div className="overflow-hidden">
                 <h2 className="text-xl font-semibold text-black">
                   {contact.name}
                 </h2>
-                <p className="text-gray-500">{contact.email}</p>
+                <p className="text-gray-500 truncate">{contact.email}</p>
               </div>
             </div>
           </div>
