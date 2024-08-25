@@ -1,6 +1,6 @@
 import React from "react";
 import "@testing-library/jest-dom";
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent, act } from "@testing-library/react";
 import DashboardPage from "@/app/dashboard/page";
 import { useRouter } from "next/navigation";
 
@@ -44,7 +44,9 @@ describe("DashboardPage", () => {
   });
 
   test("renders contact list", async () => {
-    render(<DashboardPage />);
+    await act(async () => {
+      render(<DashboardPage />);
+    });
 
     await waitFor(() => {
       mockContacts.forEach((contact) => {
@@ -55,19 +57,42 @@ describe("DashboardPage", () => {
   });
 
   test("clicking on a contact redirects to contact details page", async () => {
-    render(<DashboardPage />);
+    await act(async () => {
+      render(<DashboardPage />);
+    });
 
     // Aguarda até que os contatos estejam visíveis
     await waitFor(() => {
       expect(screen.getByText(mockContacts[0].name)).toBeInTheDocument();
     });
 
-    // Simula o clique
-    fireEvent.click(screen.getByText(mockContacts[0].name));
+    act(() => {
+      fireEvent.click(screen.getByText(mockContacts[0].name));
+    });
 
-    // Verifica se a função `push` foi chamada
     await waitFor(() => {
       expect(pushMock).toHaveBeenCalledWith(`/dashboard/${mockContacts[0].id}`);
     });
+  });
+
+  test("clicking on logout redirects to login and remove auth", async () => {
+    await act(async () => {
+      render(<DashboardPage />);
+    });
+
+    // Aguarda o carregamento da página antes de clicar no botão
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Logout" })).toBeInTheDocument();
+    });
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Logout" }));
+    });
+
+    await waitFor(() => {
+      expect(pushMock).toHaveBeenCalledWith(`/`);
+    });
+
+    expect(localStorage.getItem("isAuthenticated")).toBeNull();
   });
 });
