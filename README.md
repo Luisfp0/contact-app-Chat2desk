@@ -1,4 +1,4 @@
-# Projeto de Sistema de Login e Dashboard
+# Teste técnico Chat2desk, lista de contatos
 
 Este projeto é uma aplicação de gerenciamento de contatos com autenticação e dashboard. A aplicação possui uma página de login, um dashboard para visualizar contatos e uma página de detalhes do contato.
 
@@ -23,20 +23,20 @@ Siga os passos abaixo para instalar e executar o projeto localmente:
 1. Clone o repositório:
 
    ```bash
-   git clone https://github.com/usuario/projeto.git
-   cd projeto
+   git@github.com:Luisfp0/contact-app-chat2desk.git
+   cd contact-app-chat2desk
    ```
 
 2. Instale as dependências:
 
    ```bash
-   npm install
+   yarn
    ```
 
 3. Execute o servidor de desenvolvimento:
 
    ```bash
-   npm run dev
+   yarn dev
    ```
 
 4. Abra o navegador e vá para [http://localhost:3000](http://localhost:3000) para visualizar a aplicação.
@@ -46,7 +46,9 @@ Siga os passos abaixo para instalar e executar o projeto localmente:
 ### Página de Login
 
 - **URL**: `/`
-- **Funcionalidade**: Permite que o usuário faça login com um nome de usuário e senha.
+- **Funcionalidade**: Permite que o usuário faça login com um nome de usuário e senha que estão estáticas no código.
+- **Usuário**: admin
+- **Senha**: password
 - **Autenticação**: Usa o armazenamento local para verificar se o usuário está autenticado e redirecionar para o dashboard se já estiver autenticado.
 
 ### Página do Dashboard
@@ -65,7 +67,7 @@ Siga os passos abaixo para instalar e executar o projeto localmente:
 Os testes para a aplicação utilizam Jest e Testing Library. Para executar os testes:
 
     ```bash
-    npm run test
+    yarn test
     ```
 
 Os testes cobrem:
@@ -74,3 +76,7 @@ Os testes cobrem:
 - **Funcionalidade de login e redirecionamento.**
 - **Listagem e visualização de contatos.**
 - **Logout e remoção de autenticação.**
+
+## Licença
+
+Este projeto está licenciado sob a MIT License.
