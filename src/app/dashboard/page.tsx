@@ -12,15 +12,15 @@ interface Contact {
 }
 
 export default function DashboardPage() {
-  useAuth();
+  const { loading } = useAuth();
   const [contacts, setContacts] = useState<Contact[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [fetching, setFetching] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        setLoading(true);
+        setFetching(true); // Define fetching como verdadeiro ao iniciar o carregamento
         const response = await fetch(
           "https://jsonplaceholder.typicode.com/users"
         );
@@ -35,12 +35,13 @@ export default function DashboardPage() {
       } catch (error) {
         console.error("Error fetching contacts:", error);
       } finally {
-        setLoading(false);
+        setFetching(false); // Define fetching como falso após o carregamento
       }
     };
 
     fetchContacts();
   }, []);
+
 
   const handleContactClick = (id: number) => {
     router.push(`/dashboard/${id}`);
@@ -55,7 +56,7 @@ export default function DashboardPage() {
     }
   };
 
-  if (loading) {
+  if (loading || fetching) {
     return <Loading />;
   }
 
