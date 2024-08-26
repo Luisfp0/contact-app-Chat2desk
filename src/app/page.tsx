@@ -1,6 +1,5 @@
 "use client";
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -8,6 +7,9 @@ export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [formError, setFormError] = useState("");
+  const [usernameError, setUsernameError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -26,15 +28,54 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
 
+    setFormError("");
+    setUsernameError(false);
+    setPasswordError(false);
+
+    let hasError = false;
+
+    if (username.trim() === "") {
+      setFormError((prev) => prev + "Nome de usuário é obrigatório. ");
+      setUsernameError(true);
+      hasError = true;
+    }
+
+    if (password.trim() === "") {
+      setFormError((prev) => prev + "Senha é obrigatória. ");
+      setPasswordError(true);
+      hasError = true;
+    }
+
+    if (hasError) {
+      setLoading(false);
+      return;
+    }
+
     if (username === "admin" && password === "password") {
       console.log("Logged");
       localStorage.setItem("isAuthenticated", "true");
       router.push("/dashboard");
     } else {
-      alert("Credenciais inválidas. Por favor, tente novamente.");
+      setFormError("Credenciais inválidas. Por favor, tente novamente.");
     }
 
     setLoading(false);
+  };
+
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+    if (usernameError) {
+      setUsernameError(false);
+      setFormError((prev) => prev.replace("Nome de usuário é obrigatório. ", ""));
+    }
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    if (passwordError) {
+      setPasswordError(false);
+      setFormError((prev) => prev.replace("Senha é obrigatória. ", ""));
+    }
   };
 
   return (
@@ -65,14 +106,18 @@ export default function LoginPage() {
             <form onSubmit={handleLogin}>
               <div className="flex flex-col mb-4">
                 <label htmlFor="username" className="mb-2">
-                  Nome de usuário ou e-mail:
+                  Nome de usuário:
                 </label>
                 <input
                   id="username"
                   type="text"
-                  className="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className={`px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                    usernameError
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 focus:ring-blue-500"
+                  }`}
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={handleUsernameChange}
                 />
               </div>
               <div className="flex flex-col mb-6">
@@ -82,9 +127,13 @@ export default function LoginPage() {
                 <input
                   id="password"
                   type="password"
-                  className="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className={`px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
+                    passwordError
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 focus:ring-blue-500"
+                  }`}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handlePasswordChange}
                 />
               </div>
               <button
@@ -94,6 +143,17 @@ export default function LoginPage() {
               >
                 {loading ? "Entrando..." : "Entrar"}
               </button>
+              <p></p>
+              {formError ? (
+                <div className="h-4">
+                  <p className="text-red-500 text-sm mt-4 text-center">
+                    {formError}
+                  </p>
+                </div>
+              ) : (
+                <div className="h-8">
+                </div>
+              )}
             </form>
             <span className="mt-4 text-blue-500 underline cursor-pointer text-center md:text-left">
               Esqueci minha senha

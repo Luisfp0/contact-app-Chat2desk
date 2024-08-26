@@ -20,7 +20,7 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        setFetching(true); // Define fetching como verdadeiro ao iniciar o carregamento
+        setFetching(true);
         const response = await fetch(
           "https://jsonplaceholder.typicode.com/users"
         );
@@ -35,7 +35,7 @@ export default function DashboardPage() {
       } catch (error) {
         console.error("Error fetching contacts:", error);
       } finally {
-        setFetching(false); // Define fetching como falso após o carregamento
+        setFetching(false);
       }
     };
 
