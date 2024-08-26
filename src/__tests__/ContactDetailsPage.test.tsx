@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import '@testing-library/jest-dom';
 
-// Mock da função useRouter
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
   useParams: jest.fn(),
@@ -13,7 +12,9 @@ jest.mock('next/navigation', () => ({
 
 // Mock do hook useAuth
 jest.mock('@/hooks/useAuth', () => ({
-  useAuth: jest.fn(),
+  useAuth: () => ({
+    loading: false,
+  }),
 }));
 
 // Mock do componente Loading

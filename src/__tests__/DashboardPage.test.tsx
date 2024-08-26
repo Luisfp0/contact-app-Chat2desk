@@ -3,11 +3,19 @@ import "@testing-library/jest-dom";
 import { render, screen, waitFor, fireEvent, act } from "@testing-library/react";
 import DashboardPage from "@/app/dashboard/page";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth"; // Adicione a importação para useAuth
 
 const pushMock = jest.fn();
 jest.mock("next/navigation", () => ({
   useRouter: () => ({
     push: pushMock,
+  }),
+}));
+
+// Simule o hook useAuth
+jest.mock('@/hooks/useAuth', () => ({
+  useAuth: () => ({
+    loading: false,
   }),
 }));
 
@@ -61,7 +69,6 @@ describe("DashboardPage", () => {
       render(<DashboardPage />);
     });
 
-    // Aguarda até que os contatos estejam visíveis
     await waitFor(() => {
       expect(screen.getByText(mockContacts[0].name)).toBeInTheDocument();
     });
@@ -75,12 +82,11 @@ describe("DashboardPage", () => {
     });
   });
 
-  test("clicking on logout redirects to login and remove auth", async () => {
+  test("clicking on logout redirects to login and removes auth", async () => {
     await act(async () => {
       render(<DashboardPage />);
     });
 
-    // Aguarda o carregamento da página antes de clicar no botão
     await waitFor(() => {
       expect(screen.getByRole("button", { name: "Logout" })).toBeInTheDocument();
     });

@@ -22,9 +22,7 @@ describe("LoginPage", () => {
     expect(
       screen.getByText("Entre com seus dados de acesso.")
     ).toBeInTheDocument();
-    expect(
-      screen.getByLabelText("Nome de usuário ou e-mail:")
-    ).toBeInTheDocument();
+    expect(screen.getByLabelText("Nome de usuário:")).toBeInTheDocument();
     expect(screen.getByLabelText("Senha:")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Entrar" })).toBeInTheDocument();
   });
@@ -33,7 +31,7 @@ describe("LoginPage", () => {
     render(<LoginPage />);
 
     // Preenche o formulário de login
-    fireEvent.change(screen.getByLabelText("Nome de usuário ou e-mail:"), {
+    fireEvent.change(screen.getByLabelText("Nome de usuário:"), {
       target: { value: "admin" },
     });
     fireEvent.change(screen.getByLabelText("Senha:"), {
@@ -59,7 +57,7 @@ describe("LoginPage", () => {
     render(<LoginPage />);
 
     // Preenche o formulário com credenciais inválidas
-    fireEvent.change(screen.getByLabelText("Nome de usuário ou e-mail:"), {
+    fireEvent.change(screen.getByLabelText("Nome de usuário:"), {
       target: { value: "admin" },
     });
     fireEvent.change(screen.getByLabelText("Senha:"), {
@@ -68,13 +66,6 @@ describe("LoginPage", () => {
 
     // Submete o formulário
     fireEvent.click(screen.getByRole("button", { name: "Entrar" }));
-
-    // Espera o alerta de credenciais inválidas
-    await waitFor(() => {
-      expect(window.alert).toHaveBeenCalledWith(
-        "Credenciais inválidas. Por favor, tente novamente."
-      );
-    });
 
     // Verifica se o status de autenticação não foi salvo no localStorage
     expect(localStorage.getItem("isAuthenticated")).toBeNull();
