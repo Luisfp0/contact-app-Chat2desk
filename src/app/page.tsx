@@ -48,6 +48,7 @@ export default function LoginPage() {
               height={96}
               className="rounded-lg mx-auto"
               alt="logo"
+              priority
             />
             <h1 className="mt-4 text-4xl font-bold text-[#283CFA]">
               Chat<span className="text-[#55DBAB]">2</span>Desk
