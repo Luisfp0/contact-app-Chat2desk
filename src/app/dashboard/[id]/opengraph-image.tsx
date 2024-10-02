@@ -1,5 +1,5 @@
+import { getContact } from '@/utils/getContact'
 import { ImageResponse } from 'next/og'
-import { getContact } from './page'
 
 export const runtime = 'edge'
 
