@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og'
+import { getContact } from './page'
 
 export const runtime = 'edge'
 
@@ -9,14 +10,14 @@ export const size = {
 
 export const contentType = 'image/png'
 
-export default async function Image() {
+export default async function Image({ params }: { params: { id: string } }) {
+  const contact = await getContact(params.id)
+
   const fontData = await fetch(
     new URL('../../../../public/fonts/Roboto.ttf', import.meta.url)
   ).then((res) => res.arrayBuffer())
 
-  const imageData = await fetch(
-    new URL('../../../../public/images/HO-brasil.jpg', import.meta.url)
-  ).then((res) => res.arrayBuffer())
+  const imageUrl = `https://i.pravatar.cc/1200?img=${contact.id}`;
 
   return new ImageResponse(
     (
@@ -26,7 +27,7 @@ export default async function Image() {
           {/* @ts-ignore:next-line */}
           <img
             tw="w-full h-full flex rounded-tl-2xl rounded-bl-2xl border-r-4 border-black"
-            src={imageData as unknown as string}
+            src={imageUrl as unknown as string}
             alt=""
             style={{
               objectFit: 'cover',
@@ -188,10 +189,10 @@ export default async function Image() {
             </g>
           </svg>
           <h1 tw="text-4xl font-bold leading-none tracking-tight text-center -mb-3">
-            Vagas remotas no seu e-mail
+            {`${contact.name} - Detalhes do Contato`}
           </h1>
           <p tw="font-medium text-lg text-center">
-            Levamos as melhores oportunidades de trampo até você teste.
+            {`Informações de contato para ${contact.name}`}
           </p>
         </div>
       </div>
